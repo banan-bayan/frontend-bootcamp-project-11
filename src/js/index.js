@@ -1,32 +1,26 @@
 // import  bootstrap from 'bootstrap';
 // import * as bootstrap from 'bootstrap';
 import '../scss/styles.scss';
-import * as yup from 'yup';
-import state from './view.js';
+import i18next from 'i18next';
+import view from './view.js';
+import handler from './handler.js';
+import resources from '../i18next/resources.js';
 
-const schema = yup.object().shape({
-  url: yup.string('is not a string').required('must dont empty').url(),
+const i18nInstance = i18next.createInstance();
+i18nInstance.init({
+  lng: 'ru',
+  debug: true,
+  resources,
+}).then(() => {
+  handler();
+}).catch(() => {
+  throw new Error('error in fn i18n');
 });
 
-const validate = (fields) => schema.validate(fields)
-  .catch(() => {
-    throw new Error('URL is notValid');
-  });
-
-const mainFn = () => {
-  const form = document.querySelector('form');
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const value = formData.get('url');
-
-    validate({ url: value })
-      .then(() => {
-        state.url = value;
-      })
-      .catch((er) => {
-        state.error = er;
-      });
-  });
+const app = () => {
+  handler();
+  view()
+    .then(() => i18nInstance)
+    .then(() => console.log('great'));
 };
-mainFn();
+app();
