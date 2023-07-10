@@ -1,6 +1,8 @@
 export default {
   translation: {
-    errorMsg: 'Ссылка должна быть валидным URL',
+    notString: 'Ведите строку',
+    empty: 'Поле должно быть заполнено',
+    notValidUrl: 'Ссылка должна быть валидным URL',
     validMsg: 'RSS успешно загружен',
   },
 };

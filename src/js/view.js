@@ -4,8 +4,14 @@ const initionalState = {
   url: '',
   error: '',
   lng: 'ru',
+  // i18nInstance
+  // response
 };
 const state = onChange(initionalState, (path) => { // , val, preVal
+  // console.log(state.response.json());
+
+  // const titleList = doc.querySelectorAll('title');
+  // console.log(titleList);
   const input = document.querySelector('input');
   const btnSubmit = document.querySelector('.btn-primary');
   const feedback = document.querySelector('.feedback');
@@ -13,7 +19,7 @@ const state = onChange(initionalState, (path) => { // , val, preVal
   if (path === 'error') {
     input.classList.add('is-invalid');
     btnSubmit.setAttribute('disabled', true);
-    feedback.textContent = state.i18nInstance.t('errorMsg');
+    feedback.textContent = state.i18nInstance.t(state.error);
   } else if (path === 'url') {
     input.classList.remove('is-invalid');
     btnSubmit.removeAttribute('disabled');

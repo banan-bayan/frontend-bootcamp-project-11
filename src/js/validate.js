@@ -1,10 +1,10 @@
 import * as yup from 'yup';
 
 const schema = yup.object().shape({
-  url: yup.string('is not a string').required('must dont empty').url(),
+  url: yup.string('notString').required('empty').url('notValidUrl'),
 });
 
 export default (fields) => schema.validate(fields)
-  .catch(() => {
-    throw new Error('URL is notValid');
+  .catch((err) => {
+    throw new yup.ValidationError(err);
   });

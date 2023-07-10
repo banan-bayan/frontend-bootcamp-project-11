@@ -6,8 +6,9 @@ import app from './app.js';
 import resources from '../i18next/resources.js';
 
 const i18nInstance = i18next.createInstance();
+
 i18nInstance.init({
-  lng: 'en',
+  lng: 'ru',
   debug: true,
   resources,
 }).then(() => {
