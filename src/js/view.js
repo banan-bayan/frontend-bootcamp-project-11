@@ -4,14 +4,14 @@ const initionalState = {
   url: '',
   error: '',
   lng: 'ru',
+  view: {
+    feeds: [],
+    posts: [],
+  },
   // i18nInstance
-  // response
 };
 const state = onChange(initionalState, (path) => { // , val, preVal
-  // console.log(state.response.json());
-
-  // const titleList = doc.querySelectorAll('title');
-  // console.log(titleList);
+  console.log(state.view);
   const input = document.querySelector('input');
   const btnSubmit = document.querySelector('.btn-primary');
   const feedback = document.querySelector('.feedback');

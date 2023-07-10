@@ -3,8 +3,37 @@ import validate from './validate.js';
 import state from './view.js';
 
 const parser = (xml) => {
+  const feed = [];
+  const posts = [];
   const parse = new DOMParser();
-  return parse.parseFromString(xml, 'application/xml');
+  const doc = parse.parseFromString(xml, 'application/xml');
+  const channel = doc.querySelector('channel');
+  const channelTitle = channel.querySelector('channel > title');
+  const channelDescription = channel.querySelector('channel > description');
+  const channelLink = channel.querySelector('channel > link');
+  const feedId = '';
+  feed.push({
+    id: feedId,
+    title: channelTitle.textContent,
+    description: channelDescription.textContent,
+    link: channelLink.textContent,
+  });
+  const itemList = doc.querySelectorAll('item');
+  itemList.forEach((post) => {
+    const postTitle = post.querySelector('title');
+    const postDescription = channel.querySelector('description');
+    const postLink = channel.querySelector('link');
+    posts.push({
+      title: postTitle.textContent,
+      description: postDescription.textContent,
+      link: postLink.textContent,
+      id: '',
+      feedId,
+    });
+  });
+  console.log(feed);
+  console.log(posts);
+  return { feed, posts };
 };
 
 export default () => {
@@ -18,27 +47,18 @@ export default () => {
         state.url = value;
         axios
           .get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(state.url)}`, {
-            params: {
-              lang: 'ru',
-            },
+            // params: {
+            //   lang: 'en',
+            // },
             // feed: {
             //   unit: 'second',
             // },
           })
           .then((response) => {
-            state.response = parser(response.data.contents);
-            const data = parser(response.data.contents);
-            const titleList = data.querySelectorAll('title');
-            const descriptionList = data.querySelectorAll('description');
-
-            titleList.forEach((title) => {
-              console.log(title.textContent, 'title');
-            });
-
-            descriptionList.forEach((description) => {
-              console.log(description.textContent, 'description');
-            });
-            console.log(parser(response.data.contents), 'RESPONSE');
+            const { feed, posts } = parser(response.data.contents);
+            state.view.feeds.push(feed);
+            state.view.posts.push(posts);
+            console.log('GOOOOD');
           })
           .catch((error) => {
             console.log(error, 'BAAAAD');
