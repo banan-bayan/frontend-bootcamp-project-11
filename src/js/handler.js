@@ -1,5 +1,6 @@
 import axios from 'axios';
 import uniqueId from 'lodash/uniqueId.js';
+import uniqBy from 'lodash/uniqBy.js';
 import validate from './validate.js';
 import state from './view.js';
 
@@ -44,6 +45,22 @@ const parser = (xml) => {
   throw new Error('error in parser');
 };
 
+// const repeatRequest = () => {
+//   // state.links.forEach((link) => { });
+//   axios
+//     .get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent('https://ru.hexlet.io/lessons.rss')}`, {
+//       // feed: {
+//       //   unit: 'second',
+//       //   interval: 20,
+//       // },
+//     })
+//     .then(() => console.log('5 sec'));
+
+//   setTimeout(() => {
+//     repeatRequest();
+//   }, 30000);
+// };
+// repeatRequest();
 export default () => {
   const form = document.querySelector('form');
   form.addEventListener('submit', (e) => {
@@ -51,40 +68,45 @@ export default () => {
 
     const formData = new FormData(e.target);
     const value = formData.get('url');
-    form.reset();
-    validate({ url: value })
-      .then(() => {
-        state.process = 'processing';
-        state.url = value;
-        axios
-          .get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(state.url)}`, {
-            // params: {
-            //   lang: 'en',
-            // },
-            // feed: {
-            //   unit: 'second',
-            // },
-          })
-          .then((response) => {
-            state.process = 'processed';
-            const { feed, posts } = parser(response.data.contents);
-            // console.log(feed, posts);
-            // state.view.posts = posts;
-            state.view.posts = [...posts, ...state.view.posts];
-            state.view.feeds = [...feed, ...state.view.feeds];
-            // feed.forEach((el) => state.view.feeds.push(el));
-            // posts.forEach((post) => state.view.posts.push(post));
-            // state.view.lengthPosts = posts.length;
-            // state.view.lengthFeed = feed.length;
-            console.log('GOOOOD');
-          })
-          .catch((error) => {
-            state.process = 'failed';
-            console.log(error, 'BAAAAD');
-          });
-      })
-      .catch((er) => {
-        state.error = er.errors;
-      });
+    if (state.links.includes(value)) {
+      state.process = 'failed';
+      console.log('dublicate url');
+    }
+    if (!state.links.includes(value)) {
+      state.links.push(value);
+
+      form.reset();
+      validate({ url: value })
+        .then(() => {
+          state.process = 'processing';
+          state.url = value;
+          axios
+            .get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(state.url)}`, {
+              params: {
+                lang: 'en',
+              },
+              // feed: {
+              //   unit: 'second',
+              // },
+            })
+            .then((response) => {
+              state.process = 'processed';
+              const { feed, posts } = parser(response.data.contents);
+              const uniqFeed = uniqBy(feed, 'title'); // ---
+              const uniqPosts = uniqBy(posts, 'title'); // --- differenceWith?
+
+              state.view.posts = [...uniqPosts, ...state.view.posts];
+              state.view.feeds = [...uniqFeed, ...state.view.feeds];
+              console.log('GOOOOD');
+            })
+            .catch((error) => {
+              state.process = 'invalidRssLink';
+              console.log(error, 'BAAAAD');
+            });
+        })
+        .catch((er) => {
+          state.error = er.errors;
+        });
+    }
   });
 };

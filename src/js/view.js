@@ -1,20 +1,27 @@
 import onChange from 'on-change';
 
 const initionalState = {
-  process: 'filling', // 'processing' , 'processed', 'failed',
+  process: 'filling', // 'processing' , 'processed', 'failed', 'invalidRssLink'
   url: '',
   error: '',
   lng: 'ru',
   view: {
-    // lengthPosts: '',
-    // lengthFeed: '',
     posts: [],
     feeds: [],
   },
-  linkLorem: 'https://lorem-rss.hexlet.app/',
+  links: [],
   // i18nInstance
 };
 const state = onChange(initionalState, (path) => { // , val, preVal
+  console.log(state.view.posts);
+  const bodyEl = document.querySelector('body');
+  const modal = document.querySelector('[aria-labelledby="modal"]');
+  const modalTitle = document.querySelector('.modal-title');
+  const modalBody = document.querySelector('.modal-body');
+
+  const input = document.querySelector('input');
+  const btnSubmit = document.querySelector('[aria-label="add"]');
+  const feedback = document.querySelector('.feedback');
   // create containers for feeds
   const feedsContainer = document.querySelector('.feeds');
   feedsContainer.innerHTML = '';
@@ -52,14 +59,12 @@ const state = onChange(initionalState, (path) => { // , val, preVal
   const postsUlGroup = document.createElement('ul');
   postsUlGroup.classList.add('list-group', 'border-0', 'rounded-0');
 
-  const input = document.querySelector('input');
-  const btnSubmit = document.querySelector('[aria-label="add"]');
-  const feedback = document.querySelector('.feedback');
   // is valid -----------------------------------------
   if (path === 'error') {
     input.classList.add('is-invalid');
-    btnSubmit.setAttribute('disabled', true);
+    // btnSubmit.setAttribute('disabled', true);
     feedback.textContent = state.i18nInstance.t(state.error);
+    feedback.classList.add('text-danger');
   } else if (path === 'url') {
     input.classList.remove('is-invalid');
     btnSubmit.removeAttribute('disabled');
@@ -77,8 +82,18 @@ const state = onChange(initionalState, (path) => { // , val, preVal
     input.focus();
   }
   if (state.process === 'failed') {
-    console.log('error, process in state');
+    input.classList.add('is-invalid');
+    feedback.classList.add('text-danger');
+    feedback.textContent = 'RSS уже существует';
+    // btnSubmit.setAttribute('disabled', true);
   }
+  if (state.process === 'invalidRssLink') {
+    input.classList.add('is-invalid');
+    feedback.classList.add('text-danger');
+    feedback.textContent = 'Ресурс не содержит валидный RSS';
+    // btnSubmit.setAttribute('disabled', true);
+  }
+
   // render post and feeds --------------------------------
   state.view.feeds.forEach((feed) => {
     const feedLiEl = document.createElement('li');
@@ -87,7 +102,7 @@ const state = onChange(initionalState, (path) => { // , val, preVal
     const feedTitle = document.createElement('h3');
     feedTitle.classList.add('h6', 'm-0');
     feedTitle.textContent = feed.title;
-    console.log(feedTitle.textContent);
+
     const feedDescription = document.createElement('p');
     feedDescription.textContent = feed.description;
     feedDescription.classList.add('m-0', 'small', 'text-black-50');
@@ -111,6 +126,10 @@ const state = onChange(initionalState, (path) => { // , val, preVal
     postLink.setAttribute('rel', 'noopenep noreferrer');
     postLink.textContent = post.title;
 
+    modalTitle.textContent = postLink.textContent;
+    // modalTitle.textContent = postLink.textContent;
+    modalBody.textContent = post.description;
+
     const postBtn = document.createElement('button');
     postBtn.classList.add('btn', 'btn-outline-primary', 'btn-sm');
     postBtn.textContent = 'Просмотр';
@@ -118,9 +137,6 @@ const state = onChange(initionalState, (path) => { // , val, preVal
     postBtn.setAttribute('data-id', `${post.id}`);
     postBtn.setAttribute('data-bs-toggle', 'modal');
     postBtn.setAttribute('data-bs-target', '#modal');
-
-    // const postDescription = document.createElement('div');
-    // postDescription.textContent = post.description;
 
     postLiEl.append(postLink);
     postLiEl.append(postBtn);
@@ -130,6 +146,19 @@ const state = onChange(initionalState, (path) => { // , val, preVal
   postsCard.append(postsCardBody);
   postsCard.append(postsUlGroup);
   postsContainer.append(postsCard);
-});
 
+  // btn Просмотр
+  const btnsCheckPost = document.querySelectorAll('.btn-outline-primary');
+  btnsCheckPost.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      bodyEl.classList.add('modal-open');
+      bodyEl.setAttribute('style', 'overflow: hidden; padding-right: 17px;');
+      modal.classList.add('show');
+      modal.setAttribute('style', 'display: block; padding-left: 0px;');
+      // const postList = document.querySelectorAll('list-group > a');
+      // console.log('ID btn', btn.dataset.id);
+      // console.log()
+    });
+  });
+});
 export default state;
