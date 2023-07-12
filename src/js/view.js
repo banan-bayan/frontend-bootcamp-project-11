@@ -12,9 +12,7 @@ const initionalState = {
   links: [],
   // i18nInstance
 };
-const state = onChange(initionalState, (path) => { // , val, preVal
-  // console.log(state.view.posts);
-
+const state = onChange(initionalState, (path) => {
   // start elements of page
   const bodyEl = document.querySelector('body');
   const modal = document.querySelector('[aria-labelledby="modal"]');
