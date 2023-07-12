@@ -1,7 +1,7 @@
 import onChange from 'on-change';
 
 const initionalState = {
-  process: 'filling', // 'processing' , 'processed', 'failed', 'invalidRssLink'
+  process: 'filling', // 'processing' , 'processed', 'failed', 'invalidRssLink', 'errorNetwork'
   url: '',
   error: '',
   lng: 'ru',
@@ -14,12 +14,14 @@ const initionalState = {
 };
 const state = onChange(initionalState, (path) => { // , val, preVal
   // console.log(state.view.posts);
+
+  // start elements of page
   const bodyEl = document.querySelector('body');
   const modal = document.querySelector('[aria-labelledby="modal"]');
   const modalTitle = document.querySelector('.modal-title');
   const modalBody = document.querySelector('.modal-body');
   const modalFooter = document.querySelector('.modal-footer');
-  const btnReedFullPost = modalFooter.querySelector('a');
+  const btnReadFullPost = modalFooter.querySelector('a');
 
   //
 
@@ -64,7 +66,7 @@ const state = onChange(initionalState, (path) => { // , val, preVal
   const postsUlGroup = document.createElement('ul');
   postsUlGroup.classList.add('list-group', 'border-0', 'rounded-0');
 
-  // is valid -----------------------------------------
+  // is valid URL -----------------------------------------
   if (path === 'error') {
     input.classList.add('is-invalid');
     feedback.textContent = state.i18nInstance.t(state.error);
@@ -82,21 +84,23 @@ const state = onChange(initionalState, (path) => { // , val, preVal
   }
   if (state.process === 'processed') {
     btnSubmit.removeAttribute('disabled');
-    // input.setAttribute('autofocus', true); // ??????????????
     input.focus();
   }
   if (state.process === 'failed') {
     input.classList.add('is-invalid');
     feedback.classList.add('text-danger');
-    feedback.textContent = 'RSS уже существует';
-    // btnSubmit.setAttribute('disabled', true);
+    feedback.textContent = state.i18nInstance.t('dublicate');
   }
   if (state.process === 'invalidRssLink') {
     input.classList.add('is-invalid');
     feedback.classList.add('text-danger');
-    feedback.textContent = 'Ресурс не содержит валидный RSS';
-    // btnSubmit.setAttribute('disabled', true);
+    feedback.textContent = state.i18nInstance.t('notValidRss');
   }
+  // if (state.process === 'errorNetwork') {
+  //   input.classList.add('is-invalid');
+  //   feedback.classList.add('text-danger');
+  //   feedback.textContent = state.i18nInstance.t('networkError');
+  // }
 
   // render post and feeds --------------------------------
   state.view.feeds.forEach((feed) => {
@@ -123,7 +127,7 @@ const state = onChange(initionalState, (path) => { // , val, preVal
     postLiEl.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 
     const postLink = document.createElement('a');
-    postLink.classList.add('fw-bold', 'isVisited');
+    postLink.classList.add('fw-bold', 'isVisited'); ///----------
     postLink.setAttribute('href', `${post.link}`);
     postLink.setAttribute('data-id', `${post.id}`);
     postLink.setAttribute('target', '_blank');
@@ -152,15 +156,30 @@ const state = onChange(initionalState, (path) => { // , val, preVal
   // btn Просмотр
   const btnsCheckPost = document.querySelectorAll('.btn-outline-primary');
   btnsCheckPost.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
+    btn.addEventListener('click', () => {
+      modal.addEventListener('click', (e) => {
+        if (e.target.id === 'modal') {
+          bodyEl.classList.remove('modal-open');
+          bodyEl.removeAttribute('style', 'overflow: hidden; padding-right: 17px;');
+          modal.classList.remove('show');
+          modal.removeAttribute('style', 'display: block; padding-left: 0px;');
+          modal.setAttribute('aria-hidden', true);
+          modal.removeAttribute('aria-modal');
+
+          const modalBackdrop = document.querySelector('.modal-backdrop');
+          if (modalBackdrop !== null) {
+            modalBackdrop.remove();
+          }
+        }
+      });
+
       const modalBackdrop = document.createElement('div');
       modalBackdrop.classList.add('modal-backdrop', 'fade', 'show');
       bodyEl.append(modalBackdrop);
       bodyEl.classList.add('modal-open');
       bodyEl.setAttribute('style', 'overflow: hidden; padding-right: 17px;');
       modal.classList.add('show');
-      modal.setAttribute('aria-modal', true); // -----
+      modal.setAttribute('aria-modal', true);
       modal.removeAttribute('aria-hidden');
       modal.setAttribute('style', 'display: block; padding-left: 0px;');
 
@@ -168,12 +187,15 @@ const state = onChange(initionalState, (path) => { // , val, preVal
         if (post.id === btn.dataset.id) {
           modalTitle.textContent = post.title;
           modalBody.textContent = post.description;
-          btnReedFullPost.setAttribute('href', post.link);
+          btnReadFullPost.setAttribute('href', post.link); // add focus?
+          // btnReadFullPost.focus();
         }
-        const linkList = document.querySelectorAll('.isVisited');
+        const linkList = document.querySelectorAll('.isVisited'); //--------
         linkList.forEach((link) => {
           if (btn.dataset.id === link.dataset.id) {
             link.classList.add('text-secondary');
+            link.classList.remove('fw-bold');
+            link.classList.add('fw-normal');
           }
         });
       });
@@ -183,9 +205,7 @@ const state = onChange(initionalState, (path) => { // , val, preVal
   // btns закрыть модалку
   const btnsCloseModal = document.querySelectorAll('[data-bs-dismiss="modal"]');
   btnsCloseModal.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      console.log('click');
+    btn.addEventListener('click', () => {
       bodyEl.classList.remove('modal-open');
       bodyEl.removeAttribute('style', 'overflow: hidden; padding-right: 17px;');
       modal.classList.remove('show');
