@@ -1,6 +1,8 @@
 import axios from 'axios';
 import uniqueId from 'lodash/uniqueId.js';
 import uniqBy from 'lodash/uniqBy.js';
+import differenceWith from 'lodash/differenceWith.js';
+import isEqual from 'lodash/isEqual.js';
 import validate from './validate.js';
 import state from './view.js';
 
@@ -60,11 +62,14 @@ const repeatRequest = () => {
       .then((response) => {
         state.process = 'processed';
         const { feed, posts } = parser(response.data.contents);
-        const uniqFeed = uniqBy(feed, 'title'); // ---
-        const uniqPosts = uniqBy(posts, 'title'); // --- differenceWith?
+        const uniqFeedTitle = uniqBy(feed, 'title');
+        const uniqPostsTitle = uniqBy(posts, 'title');
 
-        state.view.posts = [...uniqPosts, ...state.view.posts];
-        state.view.feeds = [...uniqFeed, ...state.view.feeds];
+        const uniqPosts = differenceWith(uniqPostsTitle, state.view.posts, isEqual);
+        const uniqFeeds = differenceWith(uniqFeedTitle, state.view.posts, isEqual);
+
+        state.view.posts = uniqPosts;
+        state.view.feeds = uniqFeeds;
         console.log('GOOOOD');
       })
       .catch((error) => {
