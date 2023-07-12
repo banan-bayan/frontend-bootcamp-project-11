@@ -58,7 +58,7 @@ const parser = (xml) => {
 
 //   setTimeout(() => {
 //     repeatRequest();
-//   }, 30000);
+//   }, 5000);
 // };
 // repeatRequest();
 export default () => {

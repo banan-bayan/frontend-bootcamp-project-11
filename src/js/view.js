@@ -13,15 +13,20 @@ const initionalState = {
   // i18nInstance
 };
 const state = onChange(initionalState, (path) => { // , val, preVal
-  console.log(state.view.posts);
+  // console.log(state.view.posts);
   const bodyEl = document.querySelector('body');
   const modal = document.querySelector('[aria-labelledby="modal"]');
   const modalTitle = document.querySelector('.modal-title');
   const modalBody = document.querySelector('.modal-body');
+  const modalFooter = document.querySelector('.modal-footer');
+  const btnReedFullPost = modalFooter.querySelector('a');
+
+  //
 
   const input = document.querySelector('input');
   const btnSubmit = document.querySelector('[aria-label="add"]');
   const feedback = document.querySelector('.feedback');
+
   // create containers for feeds
   const feedsContainer = document.querySelector('.feeds');
   feedsContainer.innerHTML = '';
@@ -62,7 +67,6 @@ const state = onChange(initionalState, (path) => { // , val, preVal
   // is valid -----------------------------------------
   if (path === 'error') {
     input.classList.add('is-invalid');
-    // btnSubmit.setAttribute('disabled', true);
     feedback.textContent = state.i18nInstance.t(state.error);
     feedback.classList.add('text-danger');
   } else if (path === 'url') {
@@ -119,16 +123,14 @@ const state = onChange(initionalState, (path) => { // , val, preVal
     postLiEl.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 
     const postLink = document.createElement('a');
-    postLink.classList.add('fw-bold');
+    postLink.classList.add('fw-bold', 'isVisited');
     postLink.setAttribute('href', `${post.link}`);
     postLink.setAttribute('data-id', `${post.id}`);
     postLink.setAttribute('target', '_blank');
     postLink.setAttribute('rel', 'noopenep noreferrer');
     postLink.textContent = post.title;
 
-    modalTitle.textContent = postLink.textContent;
-    // modalTitle.textContent = postLink.textContent;
-    modalBody.textContent = post.description;
+    //
 
     const postBtn = document.createElement('button');
     postBtn.classList.add('btn', 'btn-outline-primary', 'btn-sm');
@@ -150,14 +152,51 @@ const state = onChange(initionalState, (path) => { // , val, preVal
   // btn Просмотр
   const btnsCheckPost = document.querySelectorAll('.btn-outline-primary');
   btnsCheckPost.forEach((btn) => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const modalBackdrop = document.createElement('div');
+      modalBackdrop.classList.add('modal-backdrop', 'fade', 'show');
+      bodyEl.append(modalBackdrop);
       bodyEl.classList.add('modal-open');
       bodyEl.setAttribute('style', 'overflow: hidden; padding-right: 17px;');
       modal.classList.add('show');
+      modal.setAttribute('aria-modal', true); // -----
+      modal.removeAttribute('aria-hidden');
       modal.setAttribute('style', 'display: block; padding-left: 0px;');
-      // const postList = document.querySelectorAll('list-group > a');
-      // console.log('ID btn', btn.dataset.id);
-      // console.log()
+
+      state.view.posts.forEach((post) => {
+        if (post.id === btn.dataset.id) {
+          modalTitle.textContent = post.title;
+          modalBody.textContent = post.description;
+          btnReedFullPost.setAttribute('href', post.link);
+        }
+        const linkList = document.querySelectorAll('.isVisited');
+        linkList.forEach((link) => {
+          if (btn.dataset.id === link.dataset.id) {
+            link.classList.add('text-secondary');
+          }
+        });
+      });
+    });
+  });
+
+  // btns закрыть модалку
+  const btnsCloseModal = document.querySelectorAll('[data-bs-dismiss="modal"]');
+  btnsCloseModal.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('click');
+      bodyEl.classList.remove('modal-open');
+      bodyEl.removeAttribute('style', 'overflow: hidden; padding-right: 17px;');
+      modal.classList.remove('show');
+      modal.removeAttribute('style', 'display: block; padding-left: 0px;');
+      modal.setAttribute('aria-hidden', true);
+      modal.removeAttribute('aria-modal');
+
+      const modalBackdrop = document.querySelector('.modal-backdrop');
+      if (modalBackdrop !== null) {
+        modalBackdrop.remove();
+      }
     });
   });
 });
