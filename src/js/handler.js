@@ -61,15 +61,17 @@ const repeatRequest = () => {
       })
       .then((response) => {
         state.process = 'processed';
+
         const { feed, posts } = parser(response.data.contents);
-        const uniqFeedTitle = uniqBy(feed, 'title');
-        const uniqPostsTitle = uniqBy(posts, 'title');
 
-        const uniqPosts = differenceWith(uniqPostsTitle, state.view.posts, isEqual);
-        const uniqFeeds = differenceWith(uniqFeedTitle, state.view.posts, isEqual);
+        const uniqFeeds = differenceWith(feed, state.view.feeds, isEqual);
+        const uniqPosts = differenceWith(posts, state.view.posts, isEqual);
 
-        state.view.posts = uniqPosts;
-        state.view.feeds = uniqFeeds;
+        state.view.feeds = [...state.view.feeds, ...uniqFeeds];
+        state.view.posts = [...state.view.posts, ...uniqPosts];
+
+        state.view.feeds = uniqBy(state.view.feeds, 'title');
+        state.view.posts = uniqBy(state.view.posts, 'title');
         console.log('GOOOOD');
       })
       .catch((error) => {
