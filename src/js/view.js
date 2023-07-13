@@ -70,9 +70,10 @@ const state = onChange(initionalState, (path) => {
     feedback.classList.add('text-danger');
     input.textContent = input.textContent.trim();
 
-    if (!input.value.length) {
-      feedback.textContent = state.i18nInstance.t('empty');
-    } else feedback.textContent = state.i18nInstance.t(state.error);
+    // if (!input.value.length) {
+    //   feedback.textContent = state.i18nInstance.t('empty');
+    // } else
+    feedback.textContent = state.i18nInstance.t(state.error);
   } else if (path === 'url') {
     // if (state.process === 'invalidRssLink') {
 
