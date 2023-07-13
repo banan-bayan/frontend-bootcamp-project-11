@@ -103,8 +103,11 @@ const state = onChange(initionalState, (path) => {
   }
   if (state.process === 'invalidRssLink') {
     input.classList.add('is-invalid');
+    input.textContent = input.textContent.trim();
     feedback.classList.add('text-danger');
-    feedback.textContent = state.i18nInstance.t('notValidRss');
+    if (!input.value.length) {
+      feedback.textContent = state.i18nInstance.t('empty');
+    } else feedback.textContent = state.i18nInstance.t('notValidRss');
   }
   // if (state.process === 'errorNetwork') {
   //   input.classList.add('is-invalid');
