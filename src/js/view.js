@@ -1,6 +1,7 @@
 import onChange from 'on-change';
 
 const initionalState = {
+  inputValue: '',
   process: 'filling', // 'processing' , 'processed', 'failed', 'invalidRssLink', 'errorNetwork'
   url: '',
   error: '',
@@ -14,6 +15,7 @@ const initionalState = {
 };
 const state = onChange(initionalState, (path) => {
   console.log(state.process);
+  console.log(state.inputValue);
   // start elements of page
   const bodyEl = document.querySelector('body');
   const modal = document.querySelector('[aria-labelledby="modal"]');
@@ -21,7 +23,7 @@ const state = onChange(initionalState, (path) => {
   const modalBody = document.querySelector('.modal-body');
   const modalFooter = document.querySelector('.modal-footer');
   const btnReadFullPost = modalFooter.querySelector('a');
-  const form = document.querySelector('form');
+  // const form = document.querySelector('form');
   //
 
   const input = document.querySelector('input');
@@ -65,6 +67,11 @@ const state = onChange(initionalState, (path) => {
   const postsUlGroup = document.createElement('ul');
   postsUlGroup.classList.add('list-group', 'border-0', 'rounded-0');
 
+  // isValid url or rss ---------------------
+  if (state.process === 'invalidRssLink') {
+    input.value = state.inputValue;
+  } else input.value = '';
+
   // is valid URL -----------------------------------------
   if (path === 'error') {
     input.classList.add('is-invalid');
@@ -76,9 +83,6 @@ const state = onChange(initionalState, (path) => {
     // } else
     feedback.textContent = state.i18nInstance.t(state.error);
   } else if (path === 'url') {
-    // if (state.process === 'invalidRssLink') {
-
-    // }
     input.classList.remove('is-invalid');
     btnSubmit.removeAttribute('disabled');
     feedback.classList.remove('text-danger');
@@ -92,7 +96,6 @@ const state = onChange(initionalState, (path) => {
   if (state.process === 'processed') {
     btnSubmit.removeAttribute('disabled');
     input.focus();
-    form.reset();
   }
   if (state.process === 'failed') {
     btnSubmit.removeAttribute('disabled');

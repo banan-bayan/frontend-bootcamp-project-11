@@ -71,7 +71,6 @@ const repeatRequest = () => {
         state.view.posts = uniqBy(state.view.posts, 'title');
 
         console.log('GOOOOD');
-        state.process = 'processed';
       })
       .catch((error) => {
         state.links.splice(index);
@@ -81,7 +80,7 @@ const repeatRequest = () => {
     return promises;
   });
   Promise.all(promises)
-    .then(() => setTimeout(() => repeatRequest(), 5000))
+    .then(() => setTimeout(() => repeatRequest(), 15000))
     .catch(() => console.log('error in prom all'));
 };
 
@@ -97,10 +96,13 @@ export default () => {
     if (!state.links.includes(value)) {
       validate({ url: value })
         .then(() => {
+          state.inputValue = value; // !!!
+
           state.links.push(value);
           state.process = 'processing';
           state.url = value;
-          repeatRequest(form);
+          repeatRequest();
+          state.process = 'processed';
         })
         .catch((er) => {
           state.error = er.errors;
