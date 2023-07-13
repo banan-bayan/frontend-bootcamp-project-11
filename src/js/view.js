@@ -26,7 +26,7 @@ const state = onChange(initionalState, (path) => {
   const input = document.querySelector('input');
   const btnSubmit = document.querySelector('[aria-label="add"]');
   const feedback = document.querySelector('.feedback');
-
+  // input.textContent = input.value.trim();
   // create containers for feeds
   const feedsContainer = document.querySelector('.feeds');
   feedsContainer.innerHTML = '';
@@ -92,6 +92,7 @@ const state = onChange(initionalState, (path) => {
     input.focus();
   }
   if (state.process === 'failed') {
+    btnSubmit.removeAttribute('disabled');
     input.classList.add('is-invalid');
     feedback.classList.add('text-danger');
     input.textContent = input.textContent.trim();
@@ -102,6 +103,7 @@ const state = onChange(initionalState, (path) => {
     }
   }
   if (state.process === 'invalidRssLink') {
+    btnSubmit.removeAttribute('disabled');
     input.classList.add('is-invalid');
     input.textContent = input.textContent.trim();
     feedback.classList.add('text-danger');
