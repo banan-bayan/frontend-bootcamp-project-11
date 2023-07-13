@@ -74,6 +74,9 @@ const state = onChange(initionalState, (path) => {
       feedback.textContent = state.i18nInstance.t('empty');
     } else feedback.textContent = state.i18nInstance.t(state.error);
   } else if (path === 'url') {
+    // if (state.process === 'invalidRssLink') {
+
+    // }
     input.classList.remove('is-invalid');
     btnSubmit.removeAttribute('disabled');
     feedback.classList.remove('text-danger');
@@ -101,15 +104,7 @@ const state = onChange(initionalState, (path) => {
   if (state.process === 'invalidRssLink') {
     input.classList.add('is-invalid');
     feedback.classList.add('text-danger');
-    // input.textContent = input.textContent.trim();
-    // console.log(input)
-    // console.log(input.length);
-    // if (!input.value.length) {
-    //   console.log(input.value.trim().length);
-    //   state.textContent = state.i18nInstance.t('empty');
-    // } else feedback.textContent = state.i18nInstance.t('notValidRss');
-
-    // feedback.textContent = state.i18nInstance.t('notValidRss');
+    feedback.textContent = state.i18nInstance.t('notValidRss');
   }
   // if (state.process === 'errorNetwork') {
   //   input.classList.add('is-invalid');
