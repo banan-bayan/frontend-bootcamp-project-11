@@ -13,6 +13,7 @@ const initionalState = {
   // i18nInstance
 };
 const state = onChange(initionalState, (path) => {
+  console.log(state.process);
   // start elements of page
   const bodyEl = document.querySelector('body');
   const modal = document.querySelector('[aria-labelledby="modal"]');
@@ -20,7 +21,7 @@ const state = onChange(initionalState, (path) => {
   const modalBody = document.querySelector('.modal-body');
   const modalFooter = document.querySelector('.modal-footer');
   const btnReadFullPost = modalFooter.querySelector('a');
-
+  const form = document.querySelector('form');
   //
 
   const input = document.querySelector('input');
@@ -91,6 +92,7 @@ const state = onChange(initionalState, (path) => {
   if (state.process === 'processed') {
     btnSubmit.removeAttribute('disabled');
     input.focus();
+    form.reset();
   }
   if (state.process === 'failed') {
     btnSubmit.removeAttribute('disabled');

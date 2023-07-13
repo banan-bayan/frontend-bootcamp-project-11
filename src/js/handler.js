@@ -16,7 +16,6 @@ const parser = (xml) => {
   ///
   const parsererror = doc.querySelector('parsererror');
   if (parsererror !== null) {
-    // state.process = 'invalidRssLink';
     console.log('notValidRss: Ресурс не содержит валидный RSS');
   } else {
     const channel = doc.querySelector('channel');
@@ -49,7 +48,7 @@ const parser = (xml) => {
 };
 
 const repeatRequest = () => {
-  const promises = state.links.map((link) => {
+  const promises = state.links.map((link, index) => {
     axios
       .get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`, {
         // params: {
@@ -60,8 +59,6 @@ const repeatRequest = () => {
         // },
       })
       .then((response) => {
-        state.process = 'processed';
-
         const { feed, posts } = parser(response.data.contents);
 
         const uniqFeeds = differenceWith(feed, state.view.feeds, isEqual);
@@ -72,9 +69,12 @@ const repeatRequest = () => {
 
         state.view.feeds = uniqBy(state.view.feeds, 'title');
         state.view.posts = uniqBy(state.view.posts, 'title');
+
         console.log('GOOOOD');
+        state.process = 'processed';
       })
       .catch((error) => {
+        state.links.splice(index);
         state.process = 'invalidRssLink';
         console.log(error, 'BAAAAD');
       });
@@ -95,13 +95,12 @@ export default () => {
       state.process = 'failed';
     }
     if (!state.links.includes(value)) {
-      state.links.push(value);
-      form.reset();
       validate({ url: value })
         .then(() => {
+          state.links.push(value);
           state.process = 'processing';
           state.url = value;
-          repeatRequest();
+          repeatRequest(form);
         })
         .catch((er) => {
           state.error = er.errors;
