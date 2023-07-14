@@ -72,6 +72,8 @@ const repeatRequest = () => {
         state.view.posts = uniqBy(state.view.posts, 'title');
 
         if (!isEqual(checkState, state.view.feeds)) { // -----------------
+          state.process = 'processed';
+          state.process = 'filling';
           state.isValid = true; // -----------------
           state.isValid = false;
         } // -----------------
@@ -107,7 +109,6 @@ export default () => {
           state.process = 'processing';
           state.url = value;
           repeatRequest();
-          state.process = 'processed';
         })
         .catch((er) => {
           state.error = er.errors;
