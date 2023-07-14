@@ -49,12 +49,14 @@ const parser = (xml) => {
 const repeatRequest = () => {
   const promises = state.links.map((link, index) => {
     axios
-      .get(`https://allorigins.hexlet.app/disableCache?true=get?url=${encodeURIComponent(link)}`, {
+      .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, {
         // disabled: {
         //   disableCache: true,
         // },
         // feed: {
         //   unit: 'second',
+        //         // disableCache?true=
+        // disableCache=true&
         // },
       })
       .then((response) => {
