@@ -95,6 +95,7 @@ export default () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const value = formData.get('url');
+    value.trim();
     if (state.links.includes(value)) {
       state.process = 'failed';
     }
