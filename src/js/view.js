@@ -89,13 +89,16 @@ const state = onChange(initionalState, (path) => {
   // state process----------------------------------
   if (state.process === 'processing') {
     btnSubmit.setAttribute('disabled', true);
+    input.setAttribute('disabled', true);
+    // form.setAttribute('disabled', true);
   }
   if (state.process === 'processed') {
+    input.removeAttribute('disabled');
     btnSubmit.removeAttribute('disabled');
+
     input.focus();
 
     input.classList.remove('is-invalid');
-    btnSubmit.removeAttribute('disabled');
     feedback.classList.remove('text-danger');
     feedback.classList.add('text-success');
     feedback.textContent = state.i18nInstance.t('validMsg');
