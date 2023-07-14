@@ -1,6 +1,7 @@
 import onChange from 'on-change';
 
 const initionalState = {
+  isValid: '',
   inputValue: '',
   process: 'filling', // 'processing' , 'processed', 'failed', 'invalidRssLink', 'errorNetwork'
   url: '',
@@ -15,7 +16,7 @@ const initionalState = {
 };
 const state = onChange(initionalState, (path) => {
   console.log(state.process);
-  console.log(state.inputValue);
+  console.log(state.isValid);
   // start elements of page
   const bodyEl = document.querySelector('body');
   const modal = document.querySelector('[aria-labelledby="modal"]');
@@ -68,9 +69,9 @@ const state = onChange(initionalState, (path) => {
   postsUlGroup.classList.add('list-group', 'border-0', 'rounded-0');
 
   // isValid url or rss ---------------------
-  if (state.process === 'invalidRssLink') {
-    input.value = state.inputValue;
-  } else input.value = '';
+  if (state.isValid === true) {
+    input.value = '';
+  }// else input.value = state.inputValue;
 
   // is valid URL -----------------------------------------
   if (path === 'error') {

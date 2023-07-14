@@ -11,12 +11,10 @@ const parser = (xml) => {
   const posts = [];
   const parse = new DOMParser();
   const doc = parse.parseFromString(xml, 'application/xml');
-  ///
-  // console.log(doc);
-  ///
+
   const parsererror = doc.querySelector('parsererror');
   if (parsererror !== null) {
-    console.log('notValidRss: Ресурс не содержит валидный RSS');
+    console.log(' битый RSS parse err');
   } else {
     const channel = doc.querySelector('channel');
     const channelTitle = channel.querySelector('channel > title');
@@ -61,6 +59,8 @@ const repeatRequest = () => {
       .then((response) => {
         const { feed, posts } = parser(response.data.contents);
 
+        const checkState = state.view.feeds; // -----------------
+
         const uniqFeeds = differenceWith(feed, state.view.feeds, isEqual);
         const uniqPosts = differenceWith(posts, state.view.posts, isEqual);
 
@@ -70,6 +70,10 @@ const repeatRequest = () => {
         state.view.feeds = uniqBy(state.view.feeds, 'title');
         state.view.posts = uniqBy(state.view.posts, 'title');
 
+        if (!isEqual(checkState, state.view.feeds)) { // -----------------
+          state.isValid = true; // -----------------
+          state.isValid = false;
+        } // -----------------
         console.log('GOOOOD');
       })
       .catch((error) => {
@@ -87,6 +91,7 @@ const repeatRequest = () => {
 export default () => {
   const form = document.querySelector('form');
   form.addEventListener('submit', (e) => {
+    state.isValid = false;
     e.preventDefault();
     const formData = new FormData(e.target);
     const value = formData.get('url');
@@ -96,8 +101,6 @@ export default () => {
     if (!state.links.includes(value)) {
       validate({ url: value })
         .then(() => {
-          state.inputValue = value; // !!!
-
           state.links.push(value);
           state.process = 'processing';
           state.url = value;
