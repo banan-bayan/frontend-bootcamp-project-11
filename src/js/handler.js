@@ -87,7 +87,7 @@ const repeatRequest = () => {
     return promises;
   });
   Promise.all(promises)
-    .then(() => setTimeout(() => repeatRequest(), 30000))
+    .then(() => setTimeout(() => repeatRequest(), 500))
     .catch(() => console.log('error in prom all'));
 };
 

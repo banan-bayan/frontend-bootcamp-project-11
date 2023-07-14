@@ -77,18 +77,15 @@ const state = onChange(initionalState, (path) => {
     input.classList.add('is-invalid');
     feedback.classList.add('text-danger');
     input.textContent = input.textContent.trim();
-
+    feedback.textContent = state.i18nInstance.t(state.error);
     // if (!input.value.length) {
     //   feedback.textContent = state.i18nInstance.t('empty');
-    // } else
-    feedback.textContent = state.i18nInstance.t(state.error);
-  } else if (path === 'url') {
-    input.classList.remove('is-invalid');
-    btnSubmit.removeAttribute('disabled');
-    feedback.classList.remove('text-danger');
-    feedback.classList.add('text-success');
-    feedback.textContent = state.i18nInstance.t('validMsg');
   }
+  //  else
+
+  // } else if (path === 'url') {
+
+  // }
   // state process----------------------------------
   if (state.process === 'processing') {
     btnSubmit.setAttribute('disabled', true);
@@ -96,6 +93,12 @@ const state = onChange(initionalState, (path) => {
   if (state.process === 'processed') {
     btnSubmit.removeAttribute('disabled');
     input.focus();
+
+    input.classList.remove('is-invalid');
+    btnSubmit.removeAttribute('disabled');
+    feedback.classList.remove('text-danger');
+    feedback.classList.add('text-success');
+    feedback.textContent = state.i18nInstance.t('validMsg');
   }
   if (state.process === 'failed') {
     btnSubmit.removeAttribute('disabled');
