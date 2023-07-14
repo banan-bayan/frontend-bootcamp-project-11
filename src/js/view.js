@@ -95,7 +95,6 @@ const state = onChange(initionalState, (path) => {
     input.removeAttribute('disabled');
     labelInput.classList.remove('label-disabled');
     input.focus();
-
     input.classList.remove('is-invalid');
     feedback.classList.remove('text-danger');
     feedback.classList.add('text-success');
@@ -118,11 +117,11 @@ const state = onChange(initionalState, (path) => {
     feedback.classList.add('text-danger');
     feedback.textContent = state.i18nInstance.t('notValidRss');
   }
-  // if (state.process === 'errorNetwork') {
-  //   input.classList.add('is-invalid');
-  //   feedback.classList.add('text-danger');
-  //   feedback.textContent = state.i18nInstance.t('networkError');
-  // }
+  if (state.process === 'errorNetwork') {
+    input.classList.add('is-invalid');
+    feedback.classList.add('text-danger');
+    feedback.textContent = state.i18nInstance.t('networkError');
+  }
 
   // render post and feeds --------------------------------
   state.view.feeds.forEach((feed) => {

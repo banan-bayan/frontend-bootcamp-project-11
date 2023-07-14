@@ -83,8 +83,10 @@ const repeatRequest = () => {
       })
       .catch(() => {
         state.links.splice(index);
-        state.process = 'invalidRssLink';
-        // console.log(error, 'BAAAAD');
+        if (state.invalidRss !== false) {
+          state.process = 'errorNetwork';
+          console.log('baaaad');
+        }
       });
     return promises;
   });
