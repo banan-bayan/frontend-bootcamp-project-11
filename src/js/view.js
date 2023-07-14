@@ -15,7 +15,7 @@ const initionalState = {
   // i18nInstance
 };
 const state = onChange(initionalState, (path) => {
-  console.log(state.process);
+  // console.log(state.process);
   // start elements of page
   const bodyEl = document.querySelector('body');
   const modal = document.querySelector('[aria-labelledby="modal"]');
@@ -27,6 +27,8 @@ const state = onChange(initionalState, (path) => {
   //
 
   const input = document.querySelector('input');
+  const labelInput = document.querySelector('[for="url-input"]');
+  console.log(labelInput);
   const btnSubmit = document.querySelector('[aria-label="add"]');
   const feedback = document.querySelector('.feedback');
   // input.textContent = input.value.trim();
@@ -89,11 +91,11 @@ const state = onChange(initionalState, (path) => {
   // state process----------------------------------
   if (state.process === 'processing') {
     btnSubmit.setAttribute('disabled', true);
-    input.setAttribute('disabled', true);
+    input.setAttribute('readonly', true);
     // form.setAttribute('disabled', true);
   }
   if (state.process === 'processed') {
-    input.removeAttribute('disabled');
+    input.removeAttribute('readonly');
     btnSubmit.removeAttribute('disabled');
 
     input.focus();
