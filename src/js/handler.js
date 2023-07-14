@@ -49,9 +49,9 @@ const parser = (xml) => {
 const repeatRequest = () => {
   const promises = state.links.map((link, index) => {
     axios
-      .get(`https://allorigins.hexlet.app/get?url=${encodeURIComponent(link)}`, {
-        // params: {
-        //   lang: 'en',
+      .get(`https://allorigins.hexlet.app/disableCache?true=get?url=${encodeURIComponent(link)}`, {
+        // disabled: {
+        //   disableCache: true,
         // },
         // feed: {
         //   unit: 'second',
@@ -79,10 +79,10 @@ const repeatRequest = () => {
         } // -----------------
         console.log('GOOOOD');
       })
-      .catch((error) => {
+      .catch(() => {
         state.links.splice(index);
         state.process = 'invalidRssLink';
-        console.log(error, 'BAAAAD');
+        // console.log(error, 'BAAAAD');
       });
     return promises;
   });
