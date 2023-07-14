@@ -14,8 +14,9 @@ const parser = (xml) => {
 
   const parsererror = doc.querySelector('parsererror');
   if (parsererror !== null) {
-    console.log(' битый RSS parse err');
+    state.invalidRss = false;
   } else {
+    state.invalidRss = true;
     const channel = doc.querySelector('channel');
     const channelTitle = channel.querySelector('channel > title');
     const channelDescription = channel.querySelector('channel > description');
@@ -84,7 +85,7 @@ const repeatRequest = () => {
     return promises;
   });
   Promise.all(promises)
-    .then(() => setTimeout(() => repeatRequest(), 15000))
+    .then(() => setTimeout(() => repeatRequest(), 30000))
     .catch(() => console.log('error in prom all'));
 };
 

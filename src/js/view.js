@@ -2,7 +2,7 @@ import onChange from 'on-change';
 
 const initionalState = {
   isValid: '',
-  inputValue: '',
+  invalidRss: '',
   process: 'filling', // 'processing' , 'processed', 'failed', 'invalidRssLink', 'errorNetwork'
   url: '',
   error: '',
@@ -16,7 +16,6 @@ const initionalState = {
 };
 const state = onChange(initionalState, (path) => {
   console.log(state.process);
-  console.log(state.isValid);
   // start elements of page
   const bodyEl = document.querySelector('body');
   const modal = document.querySelector('[aria-labelledby="modal"]');
@@ -68,7 +67,7 @@ const state = onChange(initionalState, (path) => {
   const postsUlGroup = document.createElement('ul');
   postsUlGroup.classList.add('list-group', 'border-0', 'rounded-0');
 
-  // isValid url or rss ---------------------
+  // isValid rss ---------------------
   if (state.isValid === true) {
     input.value = '';
   }// else input.value = state.inputValue;
@@ -108,14 +107,14 @@ const state = onChange(initionalState, (path) => {
     // } else
     feedback.textContent = state.i18nInstance.t('dublicate');
   }
-  if (state.process === 'invalidRssLink') {
+  // if (state.process === 'invalidRssLink') {
+  //   console.log('fa');
+  // }
+  if (state.invalidRss === false) {
     btnSubmit.removeAttribute('disabled');
     input.classList.add('is-invalid');
     input.textContent = input.textContent.trim();
     feedback.classList.add('text-danger');
-    // if (!input.value.length) {
-    //   feedback.textContent = state.i18nInstance.t('empty');
-    // } else
     feedback.textContent = state.i18nInstance.t('notValidRss');
   }
   // if (state.process === 'errorNetwork') {
