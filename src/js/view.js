@@ -28,7 +28,6 @@ const state = onChange(initionalState, (path) => {
 
   const input = document.querySelector('input');
   const labelInput = document.querySelector('[for="url-input"]');
-  console.log(labelInput);
   const btnSubmit = document.querySelector('[aria-label="add"]');
   const feedback = document.querySelector('.feedback');
   // input.textContent = input.value.trim();
@@ -91,7 +90,9 @@ const state = onChange(initionalState, (path) => {
   // state process----------------------------------
   if (state.process === 'processing') {
     btnSubmit.setAttribute('disabled', true);
-    input.setAttribute('readonly', true);
+    // labelInput.setAttribute('disabled', true);
+    input.setAttribute('readonly', 'readonly');
+    // input.setAttribute('disabled', true);
     // form.setAttribute('disabled', true);
   }
   if (state.process === 'processed') {
