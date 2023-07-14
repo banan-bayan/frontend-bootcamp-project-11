@@ -27,7 +27,7 @@ const state = onChange(initionalState, (path) => {
   //
 
   const input = document.querySelector('input');
-  const labelInput = document.querySelector('[for="url-input"]');
+  // const labelInput = document.querySelector('[for="url-input"]');
   const btnSubmit = document.querySelector('[aria-label="add"]');
   const feedback = document.querySelector('.feedback');
   // input.textContent = input.value.trim();
@@ -71,8 +71,7 @@ const state = onChange(initionalState, (path) => {
   // isValid rss ---------------------
   if (state.isValid === true) {
     input.value = '';
-  }// else input.value = state.inputValue;
-
+  }
   // is valid URL -----------------------------------------
   if (path === 'error') {
     input.classList.add('is-invalid');
@@ -82,23 +81,17 @@ const state = onChange(initionalState, (path) => {
     // if (!input.value.length) {
     //   feedback.textContent = state.i18nInstance.t('empty');
   }
-  //  else
-
-  // } else if (path === 'url') {
-
-  // }
   // state process----------------------------------
   if (state.process === 'processing') {
     btnSubmit.setAttribute('disabled', true);
-    // labelInput.setAttribute('disabled', true);
-    input.setAttribute('readonly', 'readonly');
-    // input.setAttribute('disabled', true);
-    // form.setAttribute('disabled', true);
+    input.setAttribute('readonly', true);
+    input.setAttribute('disabled', true);
   }
   if (state.process === 'processed') {
+    // labelInput.removeAttribute('style', 'background: #e8ebee;');
     input.removeAttribute('readonly');
     btnSubmit.removeAttribute('disabled');
-
+    input.removeAttribute('disabled');
     input.focus();
 
     input.classList.remove('is-invalid');
@@ -116,9 +109,6 @@ const state = onChange(initionalState, (path) => {
     // } else
     feedback.textContent = state.i18nInstance.t('dublicate');
   }
-  // if (state.process === 'invalidRssLink') {
-  //   console.log('fa');
-  // }
   if (state.invalidRss === false) {
     btnSubmit.removeAttribute('disabled');
     input.classList.add('is-invalid');
@@ -157,7 +147,7 @@ const state = onChange(initionalState, (path) => {
     postLiEl.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 
     const postLink = document.createElement('a');
-    postLink.classList.add('fw-bold', 'isVisited'); ///----------
+    postLink.classList.add('fw-bold');
     postLink.setAttribute('href', `${post.link}`);
     postLink.setAttribute('data-id', `${post.id}`);
     postLink.setAttribute('target', '_blank');
@@ -217,10 +207,10 @@ const state = onChange(initionalState, (path) => {
         if (post.id === btn.dataset.id) {
           modalTitle.textContent = post.title;
           modalBody.textContent = post.description;
-          btnReadFullPost.setAttribute('href', post.link); // add focus?
-          // btnReadFullPost.focus();
+          btnReadFullPost.setAttribute('href', post.link);
         }
-        const linkList = document.querySelectorAll('.isVisited'); //--------
+
+        const linkList = postsContainer.querySelectorAll('a');
         linkList.forEach((link) => {
           if (btn.dataset.id === link.dataset.id) {
             link.classList.add('text-secondary');
