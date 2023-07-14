@@ -1,5 +1,9 @@
 @import "~bootstrap/scss/bootstrap";
 
-// .isVisited:visited {
-//   color: grey;
+.label-disabled::after {
+  background-color: #e8ebee !important;
+  
+}
+// input {
+//   background-color: aqua;
 // }

@@ -27,7 +27,7 @@ const state = onChange(initionalState, (path) => {
   //
 
   const input = document.querySelector('input');
-  // const labelInput = document.querySelector('[for="url-input"]');
+  const labelInput = document.querySelector('[for="url-input"]');
   const btnSubmit = document.querySelector('[aria-label="add"]');
   const feedback = document.querySelector('.feedback');
   // input.textContent = input.value.trim();
@@ -93,6 +93,7 @@ const state = onChange(initionalState, (path) => {
     btnSubmit.removeAttribute('disabled');
     input.removeAttribute('disabled');
     input.focus();
+    labelInput.classList.add('label-disabled');
 
     input.classList.remove('is-invalid');
     feedback.classList.remove('text-danger');
