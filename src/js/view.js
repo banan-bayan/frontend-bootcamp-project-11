@@ -86,14 +86,15 @@ const state = onChange(initionalState, (path) => {
     btnSubmit.setAttribute('disabled', true);
     input.setAttribute('readonly', true);
     input.setAttribute('disabled', true);
+    labelInput.classList.add('label-disabled');
   }
   if (state.process === 'processed') {
     // labelInput.removeAttribute('style', 'background: #e8ebee;');
     input.removeAttribute('readonly');
     btnSubmit.removeAttribute('disabled');
     input.removeAttribute('disabled');
+    labelInput.classList.remove('label-disabled');
     input.focus();
-    labelInput.classList.add('label-disabled');
 
     input.classList.remove('is-invalid');
     feedback.classList.remove('text-danger');
