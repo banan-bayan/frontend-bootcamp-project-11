@@ -4,8 +4,8 @@ import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 const stylesHandler = 'style-loader';
 
 export default {
@@ -18,10 +18,10 @@ export default {
   entry: './src/js/index.js',
   output: {
     filename: 'index.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(dirname, 'dist'),
   },
   devServer: {
-    static: path.resolve(__dirname, 'dist'),
+    static: path.resolve(dirname, 'dist'),
     open: true,
     port: 8080,
     host: 'localhost',
