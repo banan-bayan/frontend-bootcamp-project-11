@@ -1,5 +1,3 @@
-// import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
-// const isProduction = process.env.NODE_ENV == 'production';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { fileURLToPath } from 'url';
@@ -9,11 +7,6 @@ const dirname = path.dirname(filename);
 const stylesHandler = 'style-loader';
 
 export default {
-//   performance: {
-//     hints: false,
-//     maxEntrypointSize: 512000,
-//     maxAssetSize: 512000
-// },
   mode: 'development',
   entry: './src/js/index.js',
   output: {

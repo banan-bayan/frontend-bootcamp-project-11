@@ -50,19 +50,11 @@ const repeatRequest = () => {
   const promises = state.links.map((link, index) => {
     axios
       .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, {
-        // disabled: {
-        //   disableCache: true,
-        // },
-        // feed: {
-        //   unit: 'second',
-        //         // disableCache?true=
-        // disableCache=true&
-        // },
       })
       .then((response) => {
         const { feed, posts } = parser(response.data.contents);
 
-        const checkState = state.view.feeds; // -----------------
+        const checkState = state.view.feeds;
 
         const uniqFeeds = differenceWith(feed, state.view.feeds, isEqual);
         const uniqPosts = differenceWith(posts, state.view.posts, isEqual);
@@ -73,19 +65,17 @@ const repeatRequest = () => {
         state.view.feeds = uniqBy(state.view.feeds, 'title');
         state.view.posts = uniqBy(state.view.posts, 'title');
 
-        if (!isEqual(checkState, state.view.feeds)) { // -----------------
+        if (!isEqual(checkState, state.view.feeds)) {
           state.process = 'processed';
           state.process = 'filling';
-          state.isValid = true; // -----------------
+          state.isValid = true;
           state.isValid = false;
-        } // -----------------
-        console.log('GOOOOD');
+        }
       })
       .catch(() => {
         state.links.splice(index);
         if (state.invalidRss !== false) {
           state.process = 'errorNetwork';
-          console.log('baaaad');
         }
       });
     return promises;

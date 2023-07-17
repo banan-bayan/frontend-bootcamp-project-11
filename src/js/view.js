@@ -12,25 +12,19 @@ const initionalState = {
     feeds: [],
   },
   links: [],
-  // i18nInstance
 };
 const state = onChange(initionalState, (path) => {
-  // console.log(state.process);
-  // start elements of page
   const bodyEl = document.querySelector('body');
   const modal = document.querySelector('[aria-labelledby="modal"]');
   const modalTitle = document.querySelector('.modal-title');
   const modalBody = document.querySelector('.modal-body');
   const modalFooter = document.querySelector('.modal-footer');
   const btnReadFullPost = modalFooter.querySelector('a');
-  // const form = document.querySelector('form');
-  //
 
   const input = document.querySelector('input');
   const labelInput = document.querySelector('[for="url-input"]');
   const btnSubmit = document.querySelector('[aria-label="add"]');
   const feedback = document.querySelector('.feedback');
-  // input.textContent = input.value.trim();
   // create containers for feeds
   const feedsContainer = document.querySelector('.feeds');
   feedsContainer.innerHTML = '';
@@ -78,8 +72,6 @@ const state = onChange(initionalState, (path) => {
     feedback.classList.add('text-danger');
     input.textContent = input.textContent.trim();
     feedback.textContent = state.i18nInstance.t(state.error);
-    // if (!input.value.length) {
-    //   feedback.textContent = state.i18nInstance.t('empty');
   }
   // state process----------------------------------
   if (state.process === 'processing') {
@@ -89,7 +81,6 @@ const state = onChange(initionalState, (path) => {
     labelInput.classList.add('label-disabled');
   }
   if (state.process === 'processed') {
-    // labelInput.removeAttribute('style', 'background: #e8ebee;');
     input.removeAttribute('readonly');
     btnSubmit.removeAttribute('disabled');
     input.removeAttribute('disabled');
@@ -105,9 +96,6 @@ const state = onChange(initionalState, (path) => {
     input.classList.add('is-invalid');
     feedback.classList.add('text-danger');
     input.textContent = input.textContent.trim();
-    // if (!input.value.length) {
-    //   feedback.textContent = state.i18nInstance.t('empty');
-    // } else
     feedback.textContent = state.i18nInstance.t('dublicate');
   }
   if (state.invalidRss === false) {

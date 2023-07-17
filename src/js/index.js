@@ -13,10 +13,8 @@ i18nInstance.init({
   resources,
 }).then(() => {
   app(i18nInstance);
+}).catch(() => {
+  throw new Error('error in fn i18n');
 });
-
-// .catch(() => {
-//   throw new Error('error in fn i18n');
-// });
 
 export default i18nInstance;
