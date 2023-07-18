@@ -1,5 +1,3 @@
-// import  bootstrap from 'bootstrap';
-// import * as bootstrap from 'bootstrap';
 import '../scss/styles.scss';
 import i18next from 'i18next';
 import app from './app.js';

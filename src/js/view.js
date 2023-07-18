@@ -3,7 +3,7 @@ import onChange from 'on-change';
 const initionalState = {
   isValid: '',
   invalidRss: '',
-  process: 'filling', // 'processing' , 'processed', 'failed', 'invalidRssLink', 'errorNetwork'
+  process: 'filling',
   url: '',
   error: '',
   lng: 'ru',
