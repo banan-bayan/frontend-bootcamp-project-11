@@ -12,7 +12,6 @@ const repeatRequest = () => {
       })
       .then((response) => {
         const { feed, posts } = parser(response.data.contents);
-        console.log('c');
         const checkState = state.view.feeds;
 
         const uniqFeeds = differenceWith(feed, state.view.feeds, isEqual);
@@ -40,7 +39,7 @@ const repeatRequest = () => {
     return promises;
   });
   Promise.all(promises)
-    .then(() => setTimeout(() => repeatRequest(), 5000))
+    .then((allResp) => setTimeout(() => repeatRequest(allResp), 5000))
     .catch(() => console.log('error in prom all'));
 };
 
