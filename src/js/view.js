@@ -69,9 +69,12 @@ const state = onChange(initionalState, (path) => {
   // is valid URL -----------------------------------------
   if (path === 'error') {
     input.classList.add('is-invalid');
-    feedback.classList.add('text-danger');
+    input.removeAttribute('readonly');
+    input.removeAttribute('disabled');
     input.textContent = input.textContent.trim();
     feedback.textContent = state.i18nInstance.t(state.error);
+    feedback.classList.add('text-danger');
+    btnSubmit.removeAttribute('disabled');
   }
   // state process----------------------------------
   if (state.process === 'processing') {
@@ -82,31 +85,41 @@ const state = onChange(initionalState, (path) => {
   }
   if (state.process === 'processed') {
     input.removeAttribute('readonly');
-    btnSubmit.removeAttribute('disabled');
     input.removeAttribute('disabled');
-    labelInput.classList.remove('label-disabled');
     input.focus();
     input.classList.remove('is-invalid');
+    btnSubmit.removeAttribute('disabled');
+    labelInput.classList.remove('label-disabled');
     feedback.classList.remove('text-danger');
     feedback.classList.add('text-success');
     feedback.textContent = state.i18nInstance.t('validMsg');
   }
   if (state.process === 'failed') {
+    labelInput.classList.remove('label-disabled');
     btnSubmit.removeAttribute('disabled');
     input.classList.add('is-invalid');
-    feedback.classList.add('text-danger');
+    input.removeAttribute('readonly');
+    input.removeAttribute('disabled');
     input.textContent = input.textContent.trim();
     feedback.textContent = state.i18nInstance.t('dublicate');
+    feedback.classList.add('text-danger');
   }
   if (state.invalidRss === false) {
+    labelInput.classList.remove('label-disabled');
     btnSubmit.removeAttribute('disabled');
     input.classList.add('is-invalid');
     input.textContent = input.textContent.trim();
+    input.removeAttribute('readonly');
+    input.removeAttribute('disabled');
     feedback.classList.add('text-danger');
     feedback.textContent = state.i18nInstance.t('notValidRss');
   }
   if (state.process === 'errorNetwork') {
+    labelInput.classList.remove('label-disabled');
+    btnSubmit.removeAttribute('disabled');
     input.classList.add('is-invalid');
+    input.removeAttribute('readonly');
+    input.removeAttribute('disabled');
     feedback.classList.add('text-danger');
     feedback.textContent = state.i18nInstance.t('networkError');
   }
