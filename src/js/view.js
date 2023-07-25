@@ -14,6 +14,7 @@ const initionalState = {
   links: [],
 };
 const state = onChange(initionalState, (path) => {
+  const { i18nInstance } = state;
   const bodyEl = document.querySelector('body');
   const modal = document.querySelector('[aria-labelledby="modal"]');
   const modalTitle = document.querySelector('.modal-title');
@@ -72,7 +73,7 @@ const state = onChange(initionalState, (path) => {
     input.removeAttribute('readonly');
     input.removeAttribute('disabled');
     input.textContent = input.textContent.trim();
-    feedback.textContent = state.i18nInstance.t(state.error);
+    feedback.textContent = i18nInstance.t(state.error);
     feedback.classList.add('text-danger');
     btnSubmit.removeAttribute('disabled');
   }
@@ -92,7 +93,7 @@ const state = onChange(initionalState, (path) => {
     labelInput.classList.remove('label-disabled');
     feedback.classList.remove('text-danger');
     feedback.classList.add('text-success');
-    feedback.textContent = state.i18nInstance.t('validMsg');
+    feedback.textContent = i18nInstance.t('validMsg');
   }
   if (state.process === 'failed') {
     labelInput.classList.remove('label-disabled');
@@ -101,7 +102,7 @@ const state = onChange(initionalState, (path) => {
     input.removeAttribute('readonly');
     input.removeAttribute('disabled');
     input.textContent = input.textContent.trim();
-    feedback.textContent = state.i18nInstance.t('dublicate');
+    feedback.textContent = i18nInstance.t('dublicate');
     feedback.classList.add('text-danger');
   }
   if (state.invalidRss === false) {
@@ -112,7 +113,7 @@ const state = onChange(initionalState, (path) => {
     input.removeAttribute('readonly');
     input.removeAttribute('disabled');
     feedback.classList.add('text-danger');
-    feedback.textContent = state.i18nInstance.t('notValidRss');
+    feedback.textContent = i18nInstance.t('notValidRss');
   }
   if (state.process === 'errorNetwork') {
     labelInput.classList.remove('label-disabled');
@@ -121,7 +122,7 @@ const state = onChange(initionalState, (path) => {
     input.removeAttribute('readonly');
     input.removeAttribute('disabled');
     feedback.classList.add('text-danger');
-    feedback.textContent = state.i18nInstance.t('networkError');
+    feedback.textContent = i18nInstance.t('networkError');
   }
 
   // render post and feeds --------------------------------
