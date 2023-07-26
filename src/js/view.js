@@ -1,5 +1,7 @@
 import onChange from 'on-change';
+import i18next from 'i18next';
 
+const i18nInstance = i18next.createInstance();
 const initionalState = {
   isValid: '',
   invalidRss: '',
@@ -14,7 +16,7 @@ const initionalState = {
   links: [],
 };
 const state = onChange(initionalState, (path) => {
-  const { i18nInstance } = state;
+  // const { i18nInstance } = state;
   const bodyEl = document.querySelector('body');
   const modal = document.querySelector('[aria-labelledby="modal"]');
   const modalTitle = document.querySelector('.modal-title');

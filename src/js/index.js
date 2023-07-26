@@ -10,7 +10,7 @@ i18nInstance.init({
   debug: true,
   resources,
 }).then(() => {
-  app(i18nInstance);
+  app();
 }).catch(() => {
   throw new Error('error in fn i18n');
 });
