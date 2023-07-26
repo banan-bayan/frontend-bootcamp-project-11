@@ -14,3 +14,6 @@ make install
 make develop
 ```
 RSS Agregator
+
+## Vercel
+https://vercel.com/banan-bayan/rss-agregator
