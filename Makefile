@@ -1,4 +1,4 @@
 install:
 		npm ci
 build:
-		npm build
+		npx build
