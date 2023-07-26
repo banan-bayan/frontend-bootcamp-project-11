@@ -21,6 +21,7 @@ export default () => {
           state.process = 'processing';
           state.url = value;
           repeatRequest();
+          state.process = 'filling';
         })
         .catch((er) => {
           state.error = er.errors;
