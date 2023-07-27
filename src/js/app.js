@@ -1,7 +1,20 @@
 import handler from './handler.js';
-import state from './view.js';
+import watcherState from './view.js';
 
-export default (init18i) => {
-  state.i18nInstance = init18i;
-  handler();
+export default (i18nInstance) => {
+  const initionalState = {
+    isValid: '',
+    invalidRss: '',
+    process: 'filling',
+    url: '',
+    error: '',
+    lng: 'ru',
+    view: {
+      posts: [],
+      feeds: [],
+    },
+    links: [],
+  };
+  const watcher = watcherState(initionalState, i18nInstance);
+  handler(watcher);
 };

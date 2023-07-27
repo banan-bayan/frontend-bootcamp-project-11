@@ -1,22 +1,6 @@
 import onChange from 'on-change';
 
-const initionalState = {
-  isValid: '',
-  invalidRss: '',
-  process: 'filling',
-  url: '',
-  error: '',
-  lng: 'ru',
-  view: {
-    posts: [],
-    feeds: [],
-  },
-  links: [],
-};
-
-const state = onChange(initionalState, (path) => {
-  console.log(state);
-  const { i18nInstance } = state;
+export default (state, i18nInstance) => onChange(state, (path) => {
   const bodyEl = document.querySelector('body');
   const modal = document.querySelector('[aria-labelledby="modal"]');
   const modalTitle = document.querySelector('.modal-title');
@@ -246,4 +230,3 @@ const state = onChange(initionalState, (path) => {
     });
   });
 });
-export default state;

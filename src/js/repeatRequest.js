@@ -3,15 +3,14 @@ import uniqBy from 'lodash/uniqBy.js';
 import differenceWith from 'lodash/differenceWith.js';
 import isEqual from 'lodash/isEqual.js';
 import parser from './parser.js';
-import state from './view.js';
 
-const repeatRequest = () => {
+const repeatRequest = (stat) => {
+  const state = stat;
   const promises = state.links.map((link, index) => {
     axios
-      .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`, {
-      })
+      .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`)
       .then((response) => {
-        const { feed, posts } = parser(response.data.contents);
+        const { feed, posts } = parser(state, response.data.contents);
         const checkState = state.view.feeds;
 
         const uniqFeeds = differenceWith(feed, state.view.feeds, isEqual);
@@ -38,8 +37,11 @@ const repeatRequest = () => {
       });
     return promises;
   });
-  Promise.all(promises)
-    .then((allResp) => setTimeout(() => repeatRequest(allResp), 5000))
+  Promise
+    .all(promises)
+    .then(() => {
+      setTimeout(() => repeatRequest(state), 5000);
+    })
     .catch(() => console.log('error in prom all'));
 };
 

@@ -1,7 +1,7 @@
 import uniqueId from 'lodash/uniqueId.js';
-import state from './view.js';
 
-export default (xml) => {
+export default (stat, xml) => {
+  const state = stat;
   const feed = [];
   const posts = [];
   const parse = new DOMParser();

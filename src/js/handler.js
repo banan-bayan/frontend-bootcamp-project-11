@@ -1,9 +1,8 @@
 import validate from './validate.js';
-import state from './view.js';
-
 import repeatRequest from './repeatRequest.js';
 
-export default () => {
+export default (stat) => {
+  const state = stat;
   const form = document.querySelector('form');
   form.addEventListener('submit', (e) => {
     state.isValid = false;
@@ -20,7 +19,7 @@ export default () => {
           state.links.push(value);
           state.process = 'processing';
           state.url = value;
-          repeatRequest();
+          repeatRequest(state);
           state.process = 'filling';
         })
         .catch((er) => {
