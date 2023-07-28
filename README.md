@@ -16,4 +16,4 @@ make develop
 RSS Agregator
 
 ## Vercel
-https://vercel.com/banan-bayan/rss-agregator
+https://rss-agregator-taupe.vercel.app/
