@@ -19,9 +19,9 @@ export default (stat) => {
           state.links.push(value);
           state.process = 'processing';
           state.url = value;
-          repeatRequest(state);
           state.process = 'filling';
         })
+        .then(() => (state.update === true ? null : repeatRequest(state)))
         .catch((er) => {
           state.error = er.errors;
         });

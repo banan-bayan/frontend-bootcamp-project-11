@@ -3,6 +3,7 @@ import watcherState from './view.js';
 
 export default (i18nInstance) => {
   const initionalState = {
+    update: false,
     isValid: '',
     invalidRss: '',
     process: 'filling',

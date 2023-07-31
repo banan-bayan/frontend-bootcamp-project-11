@@ -6,6 +6,7 @@ import parser from './parser.js';
 
 const repeatRequest = (stat) => {
   const state = stat;
+  state.update = true;
   const promises = state.links.map((link, index) => {
     axios
       .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`)
@@ -40,6 +41,7 @@ const repeatRequest = (stat) => {
   Promise
     .all(promises)
     .then(() => {
+      console.log(new Date());
       setTimeout(() => repeatRequest(state), 5000);
     })
     .catch(() => console.log('error in prom all'));
