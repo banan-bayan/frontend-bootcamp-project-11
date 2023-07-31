@@ -41,7 +41,6 @@ const repeatRequest = (stat) => {
   Promise
     .all(promises)
     .then(() => {
-      console.log(new Date());
       setTimeout(() => repeatRequest(state), 5000);
     })
     .catch(() => console.log('error in prom all'));
