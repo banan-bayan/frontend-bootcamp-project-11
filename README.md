@@ -16,4 +16,4 @@ make develop
 RSS Agregator
 
 ## Vercel
-https://rss-agregator-taupe.vercel.app/
+https://frontend-bootcamp-project-11-pied.vercel.app/
