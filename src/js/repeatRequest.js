@@ -8,8 +8,7 @@ const repeatRequest = (stat) => {
   const state = stat;
   state.update = true;
   const promises = state.links.map((link, index) => {
-    axios
-      .get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`)
+    axios.get(`https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`)
       .then((response) => {
         const { feed, posts } = parser(state, response.data.contents);
         const checkState = state.view.feeds;
